@@ -6,6 +6,7 @@ import numpy as np
 from keras.layers.merge import concatenate
 from keras.models import Model
 from keras.optimizers import Adam
+from keras.utils import plot_model
 
 from data_process import Number_of_RNN
 
@@ -63,37 +64,48 @@ def rnn_model(x_train, y_train):
 ############################################
 
 if __name__ == '__main__':
-    # for test mask
-    # fake num with size 1*5*3
-    num = [[[0,0,0],
-           [1,2,3],
-           [0,0,0],
-           [1,2,3],
-           [0,0,0]]]
-    num = np.array(num)
+    train_file = '../intermediate_data/TRAIN_ft_processed_50.csv'
+    test_file = '../intermediate_data/VAL_ft_processed_50.csv'
+    x_train, y_train, x_test, y_test = get_model_input(train_file, test_file)
+    model = rnn_model(x_train, y_train)
+    plot_model(model, to_file='../outputs/model.png')
 
-    c1 = [[[0],
-           [1],
-           [0],
-           [1],
-           [0]]]
-    c1 = np.array(c1)
 
-    c2 = [[[0],
-           [1],
-           [0],
-           [1],
-           [0]]]
-    c2 = np.array(c2)
 
-    y = [[0, 1]]
-    y = np.array(y)
+######################################################################
 
-    x = [num, c1, c2]
-
-    model = rnn_model(x, y)
-
-    layer_name = 'gru_1'
-
-    intermediate_model = Model(inputs = model.input, outputs = model.get_layer(layer_name).output)
-    print intermediate_model.predict(x)
+# if __name__ == '__main__':
+#     # for test mask
+#     # fake num with size 1*5*3
+#     num = [[[0,0,0],
+#            [1,2,3],
+#            [0,0,0],
+#            [1,2,3],
+#            [0,0,0]]]
+#     num = np.array(num)
+#
+#     c1 = [[[0],
+#            [1],
+#            [0],
+#            [1],
+#            [0]]]
+#     c1 = np.array(c1)
+#
+#     c2 = [[[0],
+#            [1],
+#            [0],
+#            [1],
+#            [0]]]
+#     c2 = np.array(c2)
+#
+#     y = [[0, 1]]
+#     y = np.array(y)
+#
+#     x = [num, c1, c2]
+#
+#     model = rnn_model(x, y)
+#
+#     layer_name = 'gru_1'
+#
+#     intermediate_model = Model(inputs = model.input, outputs = model.get_layer(layer_name).output)
+#     print intermediate_model.predict(x)
